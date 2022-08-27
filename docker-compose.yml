@@ -1,0 +1,67 @@
+version: '3.7'
+
+services:
+  redis:
+    container_name: redis-dev
+    image: redis:alpine
+    expose:
+      - 6379
+  postgres:
+    container_name: postgres-dev
+    image: postgres:14-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+#    expose:
+#      - 5432
+    ports:  # remove in prod
+      - "5432:5432"
+    env_file:
+      - db.env
+    restart: always
+  django:
+    container_name: django-dev
+    build: ./back
+    image: django
+#    command: sh -c "python manage.py migrate --no-input && gunicorn boss.wsgi -b 0:8000"
+    command: sh -c "python manage.py migrate --no-input && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./back:/app
+#      - logs:/app/logs
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    env_file:
+      - db.env
+      - .env
+  celery:
+    container_name: celery-dev
+    image: django
+    command: celery -A any_skill worker -B -l INFO
+    volumes:
+      - ./back:/app
+#      - logs:/app/logs
+    depends_on:
+      - django
+      - redis
+    env_file:
+      - db.env
+      - .env
+  react:
+    container_name: react-dev
+    build: ./front
+    command: npm start
+    volumes:
+      - ./front:/app
+    environment:
+#      - REACT_APP_API_URL=http://91.225.238.193:8000/api
+      - REACT_APP_API_URL=http://127.0.0.1:8000/api
+    ports:
+      - "3000:3000"
+    tty: true
+    stdin_open: true
+
+
+volumes:
+  postgres_data:
+#  logs:
