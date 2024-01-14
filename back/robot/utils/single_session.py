@@ -2,7 +2,7 @@ import requests
 from enum import Enum
 from requests.packages import urllib3
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-from any_skill.utils.singleton import MetaSingleton
+from robot.utils.singleton import MetaSingleton
 
 urllib3.disable_warnings(InsecureRequestWarning)
 

@@ -2,8 +2,8 @@ import logging
 
 from rest_framework import viewsets, permissions
 from django.contrib.auth.models import User
-from any_skill.core import serializers, models
-from any_skill.core.api.utils import DefaultSetPagination
+from robot.core import serializers, models
+from robot.core.api.utils import DefaultSetPagination
 
 logger = logging.getLogger(__name__)
 

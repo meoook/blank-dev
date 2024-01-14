@@ -2,8 +2,8 @@ import random
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 
-from any_skill.core.models import Language, UserLanguage, Skill, UserSkill, SkillRequest, SkillResponse
-from any_skill.core.static import Grade
+from robot.core.models import Language, UserLanguage, Skill, UserSkill, SkillRequest, SkillResponse
+from robot.core.static import Grade
 
 
 class Command(BaseCommand):

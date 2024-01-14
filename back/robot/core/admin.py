@@ -1,28 +1,17 @@
 from django.contrib import admin
-from any_skill.core import models
+from robot.core import models
 
 
-@admin.register(models.Language)
+@admin.register(models.Bot)
 class LanguageAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(models.UserSkill)
+@admin.register(models.Tactic)
 class UserSkillAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(models.UserLanguage)
+@admin.register(models.Coin)
 class UserLanguageAdmin(admin.ModelAdmin):
     pass
-
-
-@admin.register(models.SkillRequest)
-class SkillRequestAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.SkillResponse)
-class SkillResponseAdmin(admin.ModelAdmin):
-    pass
-

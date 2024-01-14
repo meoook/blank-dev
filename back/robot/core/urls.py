@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework import routers
-from any_skill.core import views
+from robot.core import views
 
 router = routers.DefaultRouter()
 router.register(r'languages', views.LanguageViewSet)

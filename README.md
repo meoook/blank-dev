@@ -1,6 +1,6 @@
-# AnySkill
+# Robot
 
-**_Learning Platform_**
+**_Trade robot_**
 
 * web site: [not-done-yet.ru][prod]
 * version: 0.0.1

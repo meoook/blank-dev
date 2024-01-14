@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
-from any_skill.core import models
+from robot.core import models
 
 
 class LanguageSerializer(serializers.ModelSerializer):

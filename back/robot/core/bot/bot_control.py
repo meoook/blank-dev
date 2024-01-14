@@ -1,0 +1,2 @@
+class BotControl:
+    pass

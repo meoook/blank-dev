@@ -23,22 +23,8 @@ def add_data(apps, schema_editor):
     md_groups = apps.get_model('core', 'SkillGroup')
 
     list_group = {
-        'Programming': {
-            'names': ('Python', 'C++', 'C#', 'JavaScript', 'TypeScript', 'Dart', 'Go', 'HTML', 'CSS',),
-            'skills': ('Basic', 'OOP', 'Framework', 'Library', 'Async',),
-        },
-        'Socials': {
-            'names': ('Twitter', 'Facebook', 'Vkontakte', 'Tiktok', 'Instagram',
-                      'Telegram', 'Whatsup', 'Discord', 'Slack',),
-            'skills': ('API', 'Create content', 'Increase subscribers', 'ads', 'Other service',),
-        },
-        'School': {'names': [], 'skills': []},
-        'Food': {'names': [], 'skills': []},
         'Relax': {'names': ('Massage', 'Psychology',), 'skills': ['Any name',]},
         'Fight': {'names': ('Kung-Fu', 'Karate', 'Dz-udo', ), 'skills': ['skill', 'history',]},
-        'Sport': {'names': [], 'skills': []},
-        'Design': {'names': [], 'skills': []},
-        'Content': {'names': [], 'skills': []},
     }
     for gr_name, gr_params in list_group.items():
         group = md_groups.objects.create(name=gr_name)
@@ -56,7 +42,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(add_data),
+        # migrations.RunPython(add_data),
         migrations.RunPython(add_user_meok),
-        migrations.RunPython(add_languages),
+        # migrations.RunPython(add_languages),
     ]

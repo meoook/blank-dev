@@ -6,7 +6,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -15,112 +14,38 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Language',
+            name='Bot',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False,
+                                           verbose_name='ID')),
+                ('name', models.CharField(max_length=50)),
+                ('api_key', models.CharField(max_length=64)),
+                ('balance', models.PositiveIntegerField(default=0)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Coin',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False,
+                                           verbose_name='ID')),
                 ('name', models.CharField(max_length=50, unique=True)),
-                ('short_name', models.CharField(max_length=10)),
+                ('short_name', models.CharField(max_length=4, unique=True)),
+                ('ticker', models.CharField(max_length=10, unique=True)),
                 ('active', models.BooleanField(default=False)),
+                ('in_futures', models.BooleanField(default=False)),
+                ('delimiter', models.PositiveIntegerField(default=1)),
             ],
         ),
         migrations.CreateModel(
-            name='Skill',
+            name='Tactic',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200)),
-                ('avg_price', models.PositiveIntegerField(default=0)),
-                ('avg_time', models.PositiveSmallIntegerField(choices=[(30, 'Short'), (45, 'Normal'), (60, 'Hour'), (90, 'Academic'), (120, 'Big')], null=True)),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False,
+                                           verbose_name='ID')),
+                ('name', models.CharField(max_length=50, unique=True)),
+                ('free', models.BooleanField(default=False)),
+                ('avg_time', models.PositiveSmallIntegerField(
+                    choices=[(30, 'Short'), (45, 'Normal'), (60, 'Hour'), (90, 'Academic'), (120, 'Big')],
+                    null=True)),
             ],
-        ),
-        migrations.CreateModel(
-            name='SkillGroup',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200, unique=True)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='SkillRequest',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('active', models.BooleanField(default=True)),
-                ('description', models.TextField(blank=True)),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('language', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.language')),
-                ('scholar', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('skill', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.skill')),
-            ],
-        ),
-        migrations.CreateModel(
-            name='SkillSubGroup',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200)),
-                ('group', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='subs', to='core.skillgroup')),
-            ],
-            options={
-                'unique_together': {('group', 'name')},
-            },
-        ),
-        migrations.CreateModel(
-            name='SkillResponse',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('price', models.PositiveIntegerField()),
-                ('time', models.PositiveSmallIntegerField(choices=[(30, 'Short'), (45, 'Normal'), (60, 'Hour'), (90, 'Academic'), (120, 'Big')])),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('request', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.skillrequest')),
-                ('teacher', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-            ],
-            options={
-                'unique_together': {('request', 'teacher')},
-            },
-        ),
-        migrations.AddField(
-            model_name='skill',
-            name='sub_group',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='skills', to='core.skillsubgroup'),
-        ),
-        migrations.CreateModel(
-            name='Lesson',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('dt_planed', models.DateTimeField(blank=True, null=True)),
-                ('dt_start', models.DateTimeField(blank=True, null=True)),
-                ('dt_end', models.DateTimeField(blank=True, null=True)),
-                ('level', models.PositiveSmallIntegerField(choices=[(1, 'Omg'), (2, 'Bad'), (3, 'Normal'), (4, 'Good'), (5, 'Best')], null=True)),
-                ('comment', models.TextField(blank=True)),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('response', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='core.skillresponse')),
-            ],
-        ),
-        migrations.CreateModel(
-            name='UserSkill',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('level', models.PositiveSmallIntegerField(choices=[(1, 'Omg'), (2, 'Bad'), (3, 'Normal'), (4, 'Good'), (5, 'Best')])),
-                ('validated', models.BooleanField(default=False)),
-                ('skill', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.skill')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='skills', to=settings.AUTH_USER_MODEL)),
-            ],
-            options={
-                'unique_together': {('user', 'skill')},
-            },
-        ),
-        migrations.CreateModel(
-            name='UserLanguage',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('level', models.PositiveSmallIntegerField(choices=[(1, 'Omg'), (2, 'Bad'), (3, 'Normal'), (4, 'Good'), (5, 'Best')])),
-                ('language', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.language')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='languages', to=settings.AUTH_USER_MODEL)),
-            ],
-            options={
-                'unique_together': {('user', 'language')},
-            },
-        ),
-        migrations.AlterUniqueTogether(
-            name='skill',
-            unique_together={('sub_group', 'name')},
         ),
     ]
